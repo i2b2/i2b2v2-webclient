@@ -376,7 +376,10 @@ i2b2.ONT.view.search.initSearchOptions = function(){
 
                 if(e.target.value.length >= 4){
                     let search_info = {};
-                    search_info.Category = "@";
+                    const searchFilter = $("#searchFilter");
+                    const category = searchFilter.data("selectedFilterValue");
+                    search_info.Category = searchFilter.data("selectedFilterType") === "category"
+                        && category && category !== "ALL CATEGORIES" ? category : "@";
                     search_info.Strategy = "contains";
                     search_info.searchStr = e.target.value;
 
@@ -493,7 +496,7 @@ i2b2.ONT.view.search.initSearchOptions = function(){
                     searchOptions.ont_hierarchy = false;
                     searchOptions.ont_search_strategy = search_info.Strategy;
                     searchOptions.ont_search_string = search_info.searchStr;
-                    searchOptions.ont_category = "@";
+                    searchOptions.ont_category = search_info.Category;
 
                     i2b2.ONT.ajax.FindDocuments("ONT:AutoSuggest", searchOptions, scopedCallback);
                 }
